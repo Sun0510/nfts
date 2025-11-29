@@ -13,9 +13,9 @@ contract SHINUNFT is ERC721, Ownable {
         nextTokenId = 0;
     }
 
-    function mint() external onlyOwner {
+    function mintTo(address to) external onlyOwner {
         require(nextTokenId < tokenURIs.length, "All NFTs minted");
-        _safeMint(msg.sender, nextTokenId);
+        _safeMint(to, nextTokenId);
         nextTokenId++;
     }
 

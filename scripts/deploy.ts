@@ -1,4 +1,4 @@
-import { ethers, run } from "hardhat";
+import { ethers } from "hardhat";
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -39,21 +39,9 @@ async function main() {
   console.log("SHINUNFT deployed at:", nft.address);
 
   for (let i = 0; i < tokenURIs.length; i++) {
-    const tx = await nft.mint();
+    const tx = await nft.mintTo(process.env.MY_ADDRESS);
     await tx.wait();
-    console.log(`Minted tokenId ${i}`);
-  }
-
-  console.log("Verifying on Etherscan...");
-  try {
-    await run("verify:verify", {
-      address: nft.address,
-      constructorArguments: [tokenURIs],
-    });
-    console.log("Verified on Etherscan");
-  } catch (err: any) {
-    console.error("Etherscan verification failed:", err.message || err);
-    console.log("You can retry manually with: npx hardhat verify --network sepolia <address> '<json-array-string>'");
+    console.log(`Minted tokenId ${i} to ${process.env.MY_ADDRESS}`);
   }
 }
 
